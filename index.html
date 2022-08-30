@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+ <head>
+  <meta charset="utf-8" />
+  <title>Telecross</title>
+  <script>
+    function getTgName(string) {
+      if(string !== '') {
+        if(string.startsWith('@')) {
+          string = string.replace('@', '');
+        }
+        if(string.startsWith('https://t.me/')) {
+          string = string.replace('https://t.me/', '');
+        }
+        return string;         
+      }
+      return false;
+    }
+    function normArr(inn_arr) {
+      let inn_arr_f = [];
+      inn_arr.forEach((element, index) => {
+        if(element !== '') {
+          let tgname = getTgName(element);
+          if(tgname) {
+            if(!inn_arr_f.includes(tgname)) {
+              inn_arr_f.push(tgname);
+            }
+          }          
+        }
+      })
+      return inn_arr_f;
+    }
+    function p() {
+      let inn = document.getElementById('inn').value;
+      let inn2 = document.getElementById('inn2').value;
+      let out = document.getElementById('out');
+      let inn_arr = inn.split(/\r?\n/);
+      let inn_arr_f = [];
+      let inn2_arr = inn2.split(/\r?\n/);
+      let inn2_arr_f = [];
+      let out_arr = [];
+      inn_arr_f = normArr(inn_arr);
+      inn2_arr_f = normArr(inn2_arr);
+      inn_arr_f.forEach((element, index) => {
+        if(inn2_arr_f.includes(element)) {
+          out_arr.push(element);
+        }
+      })
+      out.value = out_arr.join('\n');
+    }
+  </script>
+ </head>
+ <body>
+  <form onsubmit="p();return false;">
+    <textarea name="inn" id="inn" rows="25"></textarea>
+    <textarea name="inn2" id="inn2" rows="25"></textarea>
+    <textarea name="out" id="out" rows="25"></textarea>
+    <input type="submit" name="op" value="Cross">
+  </form> 
+ </body>
+</html>
